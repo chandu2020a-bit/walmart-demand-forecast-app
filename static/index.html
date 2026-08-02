@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Walmart Demand Forecast</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body style="font-family: Arial, sans-serif; max-width: 800px; margin: 40px auto;">
+    <h2>Walmart Demand Forecast (Next 12 Weeks)</h2>
+    <button onclick="loadForecast()">Get Forecast</button>
+    <canvas id="chart" width="700" height="400"></canvas>
+
+    <script>
+        async function loadForecast() {
+            const response = await fetch("/forecast");
+            const data = await response.json();
+
+            const labels = data.map(d => d.date);
+            const values = data.map(d => d.forecast);
+
+            new Chart(document.getElementById("chart"), {
+                type: "line",
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: "Forecasted Demand",
+                        data: values,
+                        borderColor: "blue",
+                        fill: false
+                    }]
+                }
+            });
+        }
+    </script>
+</body>
+</html>
